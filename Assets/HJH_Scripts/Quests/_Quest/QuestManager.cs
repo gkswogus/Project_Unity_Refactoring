@@ -16,7 +16,15 @@ public class QuestManager : MonoBehaviour
 
     private int currentPlayerLevel;
 
-   // [SerializeField] STD playerSTD;
+
+    public int Test = 1;
+    public int Test2 = 2;
+    int Testtt()
+    {
+        return Test + Test2;
+    }
+
+    // [SerializeField] STD playerSTD;
 
     private void Awake()
     {
@@ -51,6 +59,7 @@ public class QuestManager : MonoBehaviour
 
     private void Start()
     {
+
         QuestData data = LoadQuestDataFromFile();
         LoadQuestState(data);
         foreach (Quest quest in questMap.Values)
