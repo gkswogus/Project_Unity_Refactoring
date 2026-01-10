@@ -17,13 +17,6 @@ public class QuestManager : MonoBehaviour
     private int currentPlayerLevel;
 
 
-    public int Test = 1;
-    public int Test2 = 2;
-    int Testtt()
-    {
-        return Test + Test2;
-    }
-
     // [SerializeField] STD playerSTD;
 
     private void Awake()

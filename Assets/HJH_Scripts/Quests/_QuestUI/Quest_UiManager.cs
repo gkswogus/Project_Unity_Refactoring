@@ -46,14 +46,7 @@ public class Quest_UiManager : MonoBehaviour
         GameEventManager.instance.questEvents.onQuest_inp += Quest_Inprogress;
         GameEventManager.instance.questEvents.onQuest_fin += Quest_Finish;
     }
-    //******************************************************************// 이하 보상 창
-    /*  public void ShowRewardText(Quest quest) // 퀘스트 완료 시, 보상 창
-      {
-          goldRewardText.text = $"{quest.info.goldReward}";
-          expRewardText.text = $"{quest.info.expReward}";
-          reWardUI.SetActive(true);
-      }*/
-    
+    //******************************************************************// 이하 보상 UI  
     public void ShowRewardText(QuestInfo quest) // 퀘스트 완료 시, 보상 창
     {
         goldRewardText.text = $"{quest.goldReward}";
@@ -64,69 +57,22 @@ public class Quest_UiManager : MonoBehaviour
     {
         reWardUI.SetActive(false);
     }
-    //******************************************************************// 이하 정보 창
-/*이전 구조: QuestUIManager가 QuestManager 리스트를 전체 참조 → foreach 돌면서 UI 생성
-
-지금 구조: 퀘스트 시작 시 → 이벤트로 Quest 한 개 전달 → Quest_Inprogress(Quest quest)에서 처리
-
-퀘스트 완료 시 → 이벤트로 Quest 한 개 전달 → Quest_Finish(Quest quest)에서 처리
-
-장점: 전체 리스트를 매번 순회할 필요 없음 → 10,000개 퀘스트 있어도 효율적*/
-//해야할거. 지금 UI가 Quest에 정보를 직접적으로 전달받고있다. 중간에 거치는 Ui전용 데이터 클래스 만들어서 받아오자.
-
+    //******************************************************************// 이하 정보 UI
     private void QuestWindowOn_Off() 
     {
-        /*   List<Quest> inprogress_Qust = qm.getInprogress_Q;
-           List<Quest> finish_Quest = qm.getFinish_Q;
-
-           OpenQuestWindow(inprogress_Qust, finish_Quest);*/
         isQustUI = !isQustUI;
         questUI.SetActive(isQustUI);
-        UIEventControll.instance.isOnUI = UIEventControll.instance.isOnUI ? false : true;
-        ClearQuestDetail();
+        UIEventControll.instance.isOnUI = UIEventControll.instance.isOnUI ? false : true; // 마우스 커서 잠금
         ProgressBtn();
-
-      //  ClearQuestDetail(); // finish삭제로 바꿔
-      //   SetButtonColor(progressBTN);
-      //  SetButtonColor(finishBTN);
     }
-    /*    public void OpenQuestWindow(List<Quest> inprogress_Qust, List<Quest> finish_Quest)
-        {
-            isQustUI = !isQustUI;
-            questUI.SetActive(isQustUI);
-            UIEventControll.instance.isOnUI = UIEventControll.instance.isOnUI ? false : true;
-
-            this.inprogress_finishQuest = inprogress_Qust;
-            this.finishQuest = finish_Quest;
-            ProgressBTN(); 
-        }*/
-
-    /* public void ProgressBTN() // 진행중인 퀘스트 버튼 클릭
-     {
-       //  ClearQuestList();
-         ClearQuestDetail();
-         SetButtonColor(progressBTN);
-
-         foreach (Quest quest in inprogress_finishQuest)
-         {
-             GameObject go = Instantiate(questidPrefab, inp_questListContent);
-             TMP_Text text = go.GetComponentInChildren<TMP_Text>();
-             text.text = quest.info.id;
-
-          //   Quest capturedQuest = quest; 
-             go.GetComponent<Button>().onClick.AddListener(() => ShowQuestDetail(quest));
-         }
-
-         if (inprogress_finishQuest.Count == 0) questName.text = $"진행중인 퀘스트가 없습니다.";
-     }*/
-    public void ProgressBtn()
+    public void ProgressBtn() // 진행중인 퀘스트 버튼 클릭
     {
         SetButtonColor(progressBTN);
         inp_questListContent.gameObject.SetActive(true);
         fin_questListContent.gameObject .SetActive(false);
         ClearQuestDetail();
     }
-    public void FinishBtn()
+    public void FinishBtn() // 완료한 퀘스트 버튼 클릭
     {
         SetButtonColor(finishBTN);
         inp_questListContent.gameObject.SetActive(false);
@@ -135,7 +81,7 @@ public class Quest_UiManager : MonoBehaviour
     }
 
     private Dictionary<string, GameObject> inProgressQuest = new Dictionary<string, GameObject>();
-    void Quest_Inprogress(Quest quest)
+    void Quest_Inprogress(Quest quest) 
     {
 
         if (inProgressQuest.ContainsKey(quest.info.id))
@@ -144,44 +90,28 @@ public class Quest_UiManager : MonoBehaviour
             GameObject go = Instantiate(questidPrefab, inp_questListContent);
             TMP_Text text = go.GetComponentInChildren<TMP_Text>();
             text.text = quest.info.id;
-
+         // 진행중인 퀘스트의 이름 버튼오브젝트에 함수 연결
             go.GetComponent<Button>().onClick.AddListener(() => ShowQuestDetail(quest));
 
             inProgressQuest.Add(quest.info.id, go);      
     }
 
-    private Dictionary<string, GameObject> finishedQuest = new Dictionary<string, GameObject>();
-    public void Quest_Finish(Quest quest) // 완료한 퀘스트 버튼 클릭
-    {
-       
-            //진행중인 퀘스트 넘어오면 삭제 
+    void Quest_Finish(Quest quest) 
+    {      
+            //진행중인 퀘스트 버튼오브젝트 및 딕셔너리에서 삭제
             if (inProgressQuest.TryGetValue(quest.info.id, out GameObject inGo))
             {
                 Destroy(inGo);
                 inProgressQuest.Remove(quest.info.id);
             }
 
-        if (finishedQuest.ContainsKey(quest.info.id))
-            return; 
-
-        // 새 퀘스트만 생성
            GameObject go = Instantiate(questidPrefab, fin_questListContent);
             TMP_Text text = go.GetComponentInChildren<TMP_Text>();
             text.text = quest.info.id;
 
             go.GetComponent<Button>().onClick.AddListener(() => ShowFinishQuestDetail(quest));
-
-              finishedQuest.Add(quest.info.id, go);
-        
     }
 
-/*    private void ClearQuestList()
-    {
-        foreach (Transform child in questListContent)
-        {
-            Destroy(child.gameObject);
-        }
-    }*/
     private void ClearQuestDetail()
     {
         questName.text = "";
@@ -189,7 +119,7 @@ public class Quest_UiManager : MonoBehaviour
         questGoal.text = "";
         questReward.text = "";
     }
-    private void ShowQuestDetail(Quest quest)
+    private void ShowQuestDetail(Quest quest) // 진행중인 퀘스트 정보 띄우기
     {
        questName.text = $"-{quest.info.id}";
        questIsPlay.text = $"{quest.info.DisplayName}";
@@ -197,7 +127,7 @@ public class Quest_UiManager : MonoBehaviour
        questGoal.text = quest.step.GetProgressText();
        questReward.text = $"보상 : 골드 + {quest.info.goldReward}   EXP + {quest.info.expReward}";
     }
-    private void ShowFinishQuestDetail(Quest quest)
+    private void ShowFinishQuestDetail(Quest quest) // 완료한 퀘스트 정보 띄우기
     {
         questName.text = $"-<s>{quest.info.id}</s>";
         questIsPlay.text = $"<s>{quest.info.DisplayName}</s>";
