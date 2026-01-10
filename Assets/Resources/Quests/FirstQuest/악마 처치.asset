@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d16870ffb056c14195c28381f8b4c80, type: 3}
+  m_Name: "\uC545\uB9C8 \uCC98\uCE58"
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: "\uC545\uB9C8 \uCC98\uCE58"
+  DisplayName: " \uB098\uB294 \uC774 \uC138\uC0C1\uC744 \uC5BC\uB9C8\uB098 \uB5A0\uB3CC\uC544
+    \uB2E4\uB2CC \uAC83\uC778\uAC00..   \uC774 \uC694\uC0C8\uB97C \uBC29\uBB38 \uD558\uB294\uB370
+    \uAE4C\uC9C0 \uBC8C\uC368 \uC77C\uC8FC\uC77C\uC774  \uD758\uB800\uB2E4.   \uC9C0\uAE08\uC740
+    \uC77C\uB2E8 \uC774 \uC694\uC0C8\uC5D0\uC11C \uC815\uBE44\uB97C \uD558\uACE0,
+    \uB354\uC6B1 \uAC15\uD574\uC9C0\uB294\uB370 \uB178\uB825\uD558\uC790.                                                   
+    \uC694\uC0C8 \uCD0C\uC7A5 \uB2D8 \uAED8 \uBC1B\uC740 \uCCAB \uBC88\uC9F8 \uBD80\uD0C1\uC774\uB2E4.     
+    \uB9C8\uC744 \uC678\uACFD\uC5D0 \uC788\uB294 \uC545\uB9C8\uB97C \uCC98\uCE58\uD558\uC790."
+  levelRequirement: 1
+  questPrerequistes: []
+  questStepPrefab: {fileID: 21648883034410672, guid: 932973008e39f8b4bbba59e05f2efd19, type: 3}
+  goldReward: 300
+  expReward: 115
