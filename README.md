@@ -2,7 +2,8 @@ cd "~/~"
 git status
 git add ~/~
 gid commit -m "~"
-gid push origin main
+gid push origin main => 올리기
+git pull origin main => 가져오기
 
 git log --oneline => 기록 확인
 git reset HEAD~n(n만큼 최근 지우기 n>0)
