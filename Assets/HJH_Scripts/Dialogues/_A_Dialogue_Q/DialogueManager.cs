@@ -24,40 +24,46 @@ public class DialogueManager : MonoBehaviour
         GameEventManager.instance.dialogueEvents.onEnterDialogue -= EnterDialogue;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue -= NextDialogue;
     }
-    private void NextDialogue()
+    private void NextDialogue() // G키 입력을 통해 다음 대사로 넘기기
     {
         if (!dialoguePlaying) return;
         ContinueOrExitStory();
     }
-    private void EnterDialogue(string knotName)
+    private void EnterDialogue(string knotName) // 대화 시작
     {
         if (dialoguePlaying) return;
+
         dialoguePlaying = true;
 
         if (!knotName.Equals(""))
+
+        GameEventManager.instance.dialogueEvents.DialogueStarted();
+
         {
             story.ChoosePathString(knotName); 
         }
         ContinueOrExitStory();
     }
-    void ContinueOrExitStory()
+
+    void ContinueOrExitStory() // 대화 진행 중
     {
         if (story.canContinue)
         {
             string dialogueLine = story.Continue();
-
-            Debug.Log(dialogueLine);
+            GameEventManager.instance.dialogueEvents.DialougeDisplay(dialogueLine);
         }
         else
         {
             ExitDialogue();
         }
     }
-    void ExitDialogue()
-    {
-        Debug.Log("Exit Dialogue");
 
+    void ExitDialogue() // 대화 종료
+    {
         dialoguePlaying = false;
+
+        GameEventManager.instance.dialogueEvents.DialogueFinished();
+
         story.ResetState();
     }
 }
