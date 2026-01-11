@@ -10,4 +10,22 @@ public class DialogueEvents : MonoBehaviour
     {
         onEnterDialogue?.Invoke(dialogue);
     }
+
+    public event Action onDialogueStarted;
+    public void DialogueStarted()
+    {
+        onDialogueStarted?.Invoke();
+    }
+
+    public event Action onDialogueFinished;
+    public void DialogueFinished()
+    {
+        onDialogueFinished?.Invoke();
+    }
+
+    public event Action<string> onDialogueDisplay;
+    public void DialougeDisplay(string display)
+    {
+        onDialogueDisplay?.Invoke(display);
+    }   
 }
