@@ -27,5 +27,11 @@ public class DialogueEvents : MonoBehaviour
     public void DialougeDisplay(string display)
     {
         onDialogueDisplay?.Invoke(display);
-    }   
+    }
+
+    public event Action<int> onChoiceIndex;
+    public void ChoiceIndex(int index)
+    {
+        onChoiceIndex?.Invoke(index);
+    }
 }

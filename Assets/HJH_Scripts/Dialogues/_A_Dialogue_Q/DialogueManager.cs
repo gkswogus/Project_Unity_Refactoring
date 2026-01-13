@@ -37,7 +37,7 @@ public class DialogueManager : MonoBehaviour
 
         if (!knotName.Equals(""))
 
-        GameEventManager.instance.dialogueEvents.DialogueStarted();
+        GameEventManager.instance.dialogueEvents.DialogueStarted(); // 대화UI 오브젝트 켜기
 
         {
             story.ChoosePathString(knotName); 

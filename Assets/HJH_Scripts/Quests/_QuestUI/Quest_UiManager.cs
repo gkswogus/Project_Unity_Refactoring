@@ -24,8 +24,8 @@ public class Quest_UiManager : MonoBehaviour
     [SerializeField] GameObject questidPrefab;
     [SerializeField] Transform inp_questListContent;
     [SerializeField] Transform fin_questListContent;
-    [SerializeField] Button progressBTN;
-    [SerializeField] Button finishBTN;
+    [SerializeField] UnityEngine.UI.Button progressBTN;
+    [SerializeField] UnityEngine.UI.Button finishBTN;
 
     private bool isQustUI;
 
@@ -91,7 +91,7 @@ public class Quest_UiManager : MonoBehaviour
             TMP_Text text = go.GetComponentInChildren<TMP_Text>();
             text.text = quest.info.id;
          // 진행중인 퀘스트의 이름 버튼오브젝트에 함수 연결
-            go.GetComponent<Button>().onClick.AddListener(() => ShowQuestDetail(quest));
+            go.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => ShowQuestDetail(quest));
 
             inProgressQuest.Add(quest.info.id, go);      
     }
@@ -109,7 +109,7 @@ public class Quest_UiManager : MonoBehaviour
             TMP_Text text = go.GetComponentInChildren<TMP_Text>();
             text.text = quest.info.id;
 
-            go.GetComponent<Button>().onClick.AddListener(() => ShowFinishQuestDetail(quest));
+            go.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => ShowFinishQuestDetail(quest));
     }
 
     private void ClearQuestDetail()
@@ -134,7 +134,7 @@ public class Quest_UiManager : MonoBehaviour
         questGoal.text = "";
         questReward.text = "";
     }
-    private void SetButtonColor(Button selected)
+    private void SetButtonColor(UnityEngine.UI.Button selected)
     {
         Color green = new Color(0, 1f, 0, 1f);
         Color white = Color.white;
