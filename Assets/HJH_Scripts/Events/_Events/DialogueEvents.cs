@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Ink.Runtime;
 
 public class DialogueEvents : MonoBehaviour
 {
@@ -23,10 +24,10 @@ public class DialogueEvents : MonoBehaviour
         onDialogueFinished?.Invoke();
     }
 
-    public event Action<string> onDialogueDisplay;
-    public void DialougeDisplay(string display)
+    public event Action<string,List<Choice>> onDialogueDisplay;
+    public void DialougeDisplay(string display,List<Choice> dialogueChoices) // 선택지 정보 전달 추가
     {
-        onDialogueDisplay?.Invoke(display);
+        onDialogueDisplay?.Invoke(display, dialogueChoices);
     }
 
     public event Action<int> onChoiceIndex;

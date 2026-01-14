@@ -7,9 +7,12 @@ using UnityEngine.EventSystems;
 
 
 
+
+
+
 public class DialogueChoiceButton : MonoBehaviour, ISelectHandler
 {
-    [SerializeField] private Button btn;
+    [SerializeField] private UnityEngine.UI.Button btn;
     [SerializeField] private TMP_Text choiceText;
 
     private int choiceIndex = -1;
