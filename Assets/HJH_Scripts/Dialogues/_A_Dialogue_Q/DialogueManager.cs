@@ -12,9 +12,18 @@ public class DialogueManager : MonoBehaviour
     private Story story;
     private bool dialoguePlaying = false;
     private int currentChoiceIndex = -1;
+
+    private InkFunctions inkFunctions;
+
     private void Awake()
     {
         story = new Story(inkJson.text);
+        inkFunctions = new InkFunctions();
+        inkFunctions.Bind(story);
+    }
+    private void OnDestroy()
+    {
+        inkFunctions.UnBind(story);
     }
     private void OnEnable()
     {
@@ -48,7 +57,7 @@ public class DialogueManager : MonoBehaviour
         GameEventManager.instance.dialogueEvents.DialogueStarted(); // 대화UI 오브젝트 켜기
 
         {
-            story.ChoosePathString(knotName); 
+            story.ChoosePathString(knotName); // 해당 이름의 대사 텍스트 설정
         }
         ContinueOrExitStory();
     }
