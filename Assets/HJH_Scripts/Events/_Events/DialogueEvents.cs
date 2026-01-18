@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
+using UnityEngine.UI;
 
 public class DialogueEvents : MonoBehaviour
 {
@@ -34,5 +35,11 @@ public class DialogueEvents : MonoBehaviour
     public void ChoiceIndex(int index)
     {
         onChoiceIndex?.Invoke(index);
+    }
+
+    public event Action<string, Ink.Runtime.Object> onUpdateInkDialogueVariable;
+    public void UpdateInkDialogueVariable(string name,  Ink.Runtime.Object value)
+    {
+        onUpdateInkDialogueVariable?.Invoke(name, value);
     }
 }

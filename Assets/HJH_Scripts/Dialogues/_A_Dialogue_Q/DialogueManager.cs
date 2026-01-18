@@ -14,12 +14,14 @@ public class DialogueManager : MonoBehaviour
     private int currentChoiceIndex = -1;
 
     private InkFunctions inkFunctions;
+    private InkDialogueVariables inkDialogueVariables;
 
     private void Awake()
     {
         story = new Story(inkJson.text);
         inkFunctions = new InkFunctions();
         inkFunctions.Bind(story);
+        inkDialogueVariables = new InkDialogueVariables(story);
     }
     private void OnDestroy()
     {
@@ -30,13 +32,31 @@ public class DialogueManager : MonoBehaviour
         GameEventManager.instance.dialogueEvents.onEnterDialogue += EnterDialogue;
         GameEventManager.instance.dialogueEvents.onChoiceIndex += ChoiceIndex;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue += NextDialogue;
+        GameEventManager.instance.dialogueEvents.onUpdateInkDialogueVariable += UpdadteInkDialogueVariable;
+        GameEventManager.instance.questEvents.onQuestStateChange += QuestStateChange;
     }
     private void OnDisable()
     {
         GameEventManager.instance.dialogueEvents.onEnterDialogue -= EnterDialogue;
         GameEventManager.instance.dialogueEvents.onChoiceIndex -= ChoiceIndex;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue -= NextDialogue;
+        GameEventManager.instance.dialogueEvents.onUpdateInkDialogueVariable -= UpdadteInkDialogueVariable;
+        GameEventManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
     }
+
+    private void UpdadteInkDialogueVariable(string name, Ink.Runtime.Object value)
+    {
+        inkDialogueVariables.UpdataVariableState(name, value);
+    }
+
+    private void QuestStateChange(Quest quest)
+    {
+        GameEventManager.instance.dialogueEvents.UpdateInkDialogueVariable(
+            quest.info.id + "QuestState",
+            new StringValue(quest.state.ToString())
+            );
+    }
+
     private void ChoiceIndex(int index)
     {
         currentChoiceIndex = index;
@@ -51,14 +71,15 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePlaying) return;
 
         dialoguePlaying = true;
-
-        if (!knotName.Equals(""))
-
         GameEventManager.instance.dialogueEvents.DialogueStarted(); // 대화UI 오브젝트 켜기
 
+        if (!knotName.Equals(""))
         {
             story.ChoosePathString(knotName); // 해당 이름의 대사 텍스트 설정
         }
+   
+        inkDialogueVariables.StartListening(story);
+ 
         ContinueOrExitStory();
     }
 
@@ -100,6 +121,8 @@ public class DialogueManager : MonoBehaviour
         dialoguePlaying = false;
 
         GameEventManager.instance.dialogueEvents.DialogueFinished();
+
+        inkDialogueVariables.StopListening(story);
 
         story.ResetState();
     }
