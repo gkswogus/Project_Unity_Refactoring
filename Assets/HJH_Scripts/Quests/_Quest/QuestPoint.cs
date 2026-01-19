@@ -11,6 +11,7 @@ public class QuestPoint : MonoBehaviour
 
     [Header("Quest")] // 퀘스트 넣기
     [SerializeField] private QuestInfo questInfoForPoint;
+    public QuestInfo QuestInfoForPoint => questInfoForPoint; // 읽기 전용 프로퍼티
     public QuestState currentQuestState;
     [Header("QuestPoint")] // 시작지점 or 완료지점 설정
     [SerializeField] private bool startPoint = true;
@@ -24,7 +25,6 @@ public class QuestPoint : MonoBehaviour
     float distance;
     float angleView;
     Vector3 direction;
-    UnityEngine.UI.Button btn;
 
     private void Awake()
     {
@@ -32,8 +32,6 @@ public class QuestPoint : MonoBehaviour
 
         questIcon = GetComponentInChildren<QuestIcon>();
         questId = questInfoForPoint.id;
-
-        btn = GameObject.Find("보상획득 버튼").GetComponent<UnityEngine.UI.Button>();
     }
 
     private void OnEnable()
@@ -63,22 +61,22 @@ public class QuestPoint : MonoBehaviour
             }
             else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
             {
-                btn.onClick.RemoveAllListeners(); // 버튼 기존 연결 초기화
-                btn.onClick.AddListener(() => this.ReWardGet()); // 현재 NPC만 연결
-                                                                 // 보상 획득 UI 오픈 
-                Quest_UiManager.Instance.ShowRewardText(questInfoForPoint);
-
-                UIEventControll.instance.isOnUI = UIEventControll.instance.isOnUI = true;
+                OpenQuestRewardUI();
             }
         }
 
     }
-    public void ReWardGet() //보상 획득 확인 버튼 클릭
+    public void OpenQuestRewardUI() // 퀘스트 완료 할 때 호출 => Ink 연동하기
+    {
+        Quest_UiManager.Instance.Open(this);
+    }
+
+    public void ReWardGet() // UiManager에서 버튼 클릭 이벤트 함수 연동 => 클릭 시 호출
     {
         GameEventManager.instance.questEvents.FinishQuest(questId);
         SoundManager.instance.Play(UISOUND.QuestC);
-        UIEventControll.instance.isOnUI = UIEventControll.instance.isOnUI = false;
     }
+
     private void QuestStateChange(Quest quest) // 퀘스트 상태 아이콘 변경 이벤트
     {
         if (quest.info.id.Equals(questId))
