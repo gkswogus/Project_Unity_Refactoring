@@ -10,6 +10,13 @@ public class InkFunctions
         story.BindExternalFunction("StartQuest", (string questid) => StartQuest(questid));
         story.BindExternalFunction("AdvanceQuest", (string questid) => AdvanceQuest(questid));
         story.BindExternalFunction("FinishQuest", (string questid) => FinishQuest(questid));
+        story.BindExternalFunction("OpenQuestRewardUI", () =>
+        {
+            if (DialogueContext.CurrentQuestPoint != null)
+            {
+                DialogueContext.CurrentQuestPoint.OpenQuestRewardUI();
+            }
+        });
     }
     // 바인딩 해제
     public void UnBind(Story story)
@@ -35,3 +42,4 @@ public class InkFunctions
     }
 
 }
+

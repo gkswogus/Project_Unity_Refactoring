@@ -125,6 +125,8 @@ public class DialogueManager : MonoBehaviour
         inkDialogueVariables.StopListening(story);
 
         story.ResetState();
+
+        DialogueContext.CurrentQuestPoint = null;
     }
 
     private bool LineFix(string dialogueLine) // 잉크 문제. 대화 선택지 선택 시, 빈 텍스트 출력 삭제
