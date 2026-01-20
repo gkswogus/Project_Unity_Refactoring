@@ -31,10 +31,10 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.questEvents.onFinishQuest += FinishQuest;
 
         GameEventManager.instance.playerEvents.onPlayerLevelChange += PlayerLevelChange;
-      //  GameEventManager.instance.questEvents.onProgressQuestUI += ProgressQuestUI;
-      //  GameEventManager.instance.questEvents.onFinishQuestUI += FinishQuestUI;
-      //  GameEventManager.instance.questEvents.onRewardQuestUI += RewardQuestUI;
-       // GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
+        //  GameEventManager.instance.questEvents.onProgressQuestUI += ProgressQuestUI;
+        //  GameEventManager.instance.questEvents.onFinishQuestUI += FinishQuestUI;
+        //  GameEventManager.instance.questEvents.onRewardQuestUI += RewardQuestUI;
+        // GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
     }
 
     private void OnDisable()
@@ -43,13 +43,16 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.questEvents.onAdvanceQuest -= AdvanceQuest;
         GameEventManager.instance.questEvents.onFinishQuest -= FinishQuest;
         GameEventManager.instance.playerEvents.onPlayerLevelChange -= PlayerLevelChange;
-      //  GameEventManager.instance.questEvents.onProgressQuestUI -= ProgressQuestUI;
-      //  GameEventManager.instance.questEvents.onFinishQuestUI -= FinishQuestUI;
-     //   GameEventManager.instance.questEvents.onRewardQuestUI -= RewardQuestUI;
-       // GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
+        //  GameEventManager.instance.questEvents.onProgressQuestUI -= ProgressQuestUI;
+        //  GameEventManager.instance.questEvents.onFinishQuestUI -= FinishQuestUI;
+        //   GameEventManager.instance.questEvents.onRewardQuestUI -= RewardQuestUI;
+        // GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
     }
-
-
+   public QuestState GetQuestState(string questid)
+    {
+        return questMap[questid].state;
+    }
+   
     private void Start()
     {
 

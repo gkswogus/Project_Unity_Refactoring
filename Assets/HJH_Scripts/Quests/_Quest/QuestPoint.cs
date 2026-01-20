@@ -52,7 +52,7 @@ public class QuestPoint : MonoBehaviour
         if (!dialogueKnotName.Equals(""))
         {
             DialogueContext.CurrentQuestPoint = this;
-            GameEventManager.instance.dialogueEvents.EnterDialogue(dialogueKnotName);
+            GameEventManager.instance.dialogueEvents.EnterDialogue(dialogueKnotName, QuestInfoForPoint, currentQuestState);
         }
         else
         {

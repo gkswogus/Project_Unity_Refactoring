@@ -66,7 +66,7 @@ public class DialogueManager : MonoBehaviour
         if (!dialoguePlaying) return;
         ContinueOrExitStory();
     }
-    private void EnterDialogue(string knotName) // 대화 시작
+    private void EnterDialogue(string knotName,QuestInfo info,QuestState state) // 대화 시작
     {
         if (dialoguePlaying) return;
 
@@ -77,9 +77,10 @@ public class DialogueManager : MonoBehaviour
         {
             story.ChoosePathString(knotName); // 해당 이름의 대사 텍스트 설정
         }
-   
-        inkDialogueVariables.StartListening(story);
- 
+        // NPC들은 퀘스트 정보를 이미 가지고 있음. 따라서 굳이 잉크에 변수를 가지고 놀 일이 없음. 
+        story.variablesState.SetGlobal(info.id + "QuestState", new StringValue(state.ToString()));
+        // inkDialogueVariables.StartListening(story);
+
         ContinueOrExitStory();
     }
 
@@ -122,7 +123,7 @@ public class DialogueManager : MonoBehaviour
 
         GameEventManager.instance.dialogueEvents.DialogueFinished();
 
-        inkDialogueVariables.StopListening(story);
+      inkDialogueVariables.StopListening(story);
 
         story.ResetState();
 

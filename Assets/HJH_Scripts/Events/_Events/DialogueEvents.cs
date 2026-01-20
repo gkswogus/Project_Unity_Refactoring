@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class DialogueEvents : MonoBehaviour
 {
-    public event Action<string> onEnterDialogue;
-    public void EnterDialogue(string dialogue)
+    public event Action<string,QuestInfo,QuestState> onEnterDialogue;
+    public void EnterDialogue(string dialogue,QuestInfo questinfo, QuestState state)
     {
-        onEnterDialogue?.Invoke(dialogue);
+        onEnterDialogue?.Invoke(dialogue, questinfo,state);
     }
 
     public event Action onDialogueStarted;
