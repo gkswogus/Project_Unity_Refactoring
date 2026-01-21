@@ -1,4 +1,5 @@
 === killGostMonsterQuestStart ===
+VAR KillGostMonsterQuestState ="REQUIREMENTS_NOT_MET"
 { KillGostMonsterQuestState :
    - "REQUIREMENTS_NOT_MET" : -> requirementsNotMet
    - "CAN_START" : -> canStart

@@ -4,8 +4,9 @@ EXTERNAL FinishQuest(questId)
 EXTERNAL OpenQuestRewardUI()
 
 //VAR KillGostMonsterQuestId = "KillGostMonster"
-VAR KillGostMonsterQuestState ="REQUIREMENTS_NOT_MET"
+//VAR KillGostMonsterQuestState ="REQUIREMENTS_NOT_MET"
 
 
 INCLUDE killGostMonsterQuestStartNpc.ink
 INCLUDE killGostMonsterQuestFinishNpc.ink
+INCLUDE KillCowMonsterQuestNpc.ink

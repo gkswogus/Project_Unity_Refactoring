@@ -14,14 +14,14 @@ public class DialogueManager : MonoBehaviour
     private int currentChoiceIndex = -1;
 
     private InkFunctions inkFunctions;
-    private InkDialogueVariables inkDialogueVariables;
+    //private InkDialogueVariables inkDialogueVariables;
 
     private void Awake()
     {
         story = new Story(inkJson.text);
         inkFunctions = new InkFunctions();
         inkFunctions.Bind(story);
-        inkDialogueVariables = new InkDialogueVariables(story);
+      //  inkDialogueVariables = new InkDialogueVariables(story);
     }
     private void OnDestroy()
     {
@@ -46,7 +46,7 @@ public class DialogueManager : MonoBehaviour
 
     private void UpdadteInkDialogueVariable(string name, Ink.Runtime.Object value)
     {
-        inkDialogueVariables.UpdataVariableState(name, value);
+     //   inkDialogueVariables.UpdataVariableState(name, value);
     }
 
     private void QuestStateChange(Quest quest)
@@ -123,7 +123,7 @@ public class DialogueManager : MonoBehaviour
 
         GameEventManager.instance.dialogueEvents.DialogueFinished();
 
-      inkDialogueVariables.StopListening(story);
+     // inkDialogueVariables.StopListening(story);
 
         story.ResetState();
 
