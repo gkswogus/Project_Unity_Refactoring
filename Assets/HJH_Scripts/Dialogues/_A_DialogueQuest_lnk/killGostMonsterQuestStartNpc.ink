@@ -1,5 +1,6 @@
-=== killGostMonsterQuestStart ===
-VAR KillGostMonsterQuestState ="REQUIREMENTS_NOT_MET"
+INCLUDE all_dailogue.ink
+
+VAR KillGostMonsterQuestState =""
 { KillGostMonsterQuestState :
    - "REQUIREMENTS_NOT_MET" : -> requirementsNotMet
    - "CAN_START" : -> canStart

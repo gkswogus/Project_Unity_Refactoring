@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class QuestPoint : MonoBehaviour
 {
     [Header("Dialogue")]
-    [SerializeField] private string dialogueKnotName;
+    [SerializeField] private TextAsset inkJson;
+    // [SerializeField] private string dialogueKnotName;
 
     [Header("Quest")] // Äù½ºÆ® ³Ö±â
     [SerializeField] private QuestInfo questInfoForPoint;
@@ -49,10 +50,11 @@ public class QuestPoint : MonoBehaviour
     {
         if (!NearView()) return;
 
-        if (!dialogueKnotName.Equals(""))
+       // if (!dialogueKnotName.Equals(""))
+       if(inkJson!=null)
         {
             DialogueContext.CurrentQuestPoint = this;
-            GameEventManager.instance.dialogueEvents.EnterDialogue(dialogueKnotName, QuestInfoForPoint, currentQuestState);
+            GameEventManager.instance.dialogueEvents.EnterDialogue(inkJson, QuestInfoForPoint, currentQuestState);
         }
         else
         {

@@ -1,5 +1,6 @@
-=== killCowMonsterQuest ===
-VAR KillCowMonsterQuestState ="REQUIREMENTS_NOT_MET"
+INCLUDE all_dailogue.ink
+
+VAR KillCowMonsterQuestState =""
 { KillCowMonsterQuestState :
    - "REQUIREMENTS_NOT_MET" : -> requirementsNotMet
    - "CAN_START" : -> canStart

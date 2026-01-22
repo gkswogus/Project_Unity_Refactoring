@@ -1,4 +1,6 @@
-=== killGostMonsterQuestFinish ===
+INCLUDE all_dailogue.ink
+
+VAR KillGostMonsterQuestState=""
 { KillGostMonsterQuestState :
     - "IN_PROGRESS" : -> inProgress
     - "CAN_FINISH" : -> canFinish

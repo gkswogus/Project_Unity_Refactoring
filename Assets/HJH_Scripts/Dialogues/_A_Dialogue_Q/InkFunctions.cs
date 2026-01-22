@@ -10,21 +10,16 @@ public class InkFunctions
         story.BindExternalFunction("StartQuest", (string questid) => StartQuest(questid));
         story.BindExternalFunction("AdvanceQuest", (string questid) => AdvanceQuest(questid));
         story.BindExternalFunction("FinishQuest", (string questid) => FinishQuest(questid));
-        story.BindExternalFunction("OpenQuestRewardUI", () =>
-        {
-            if (DialogueContext.CurrentQuestPoint != null)
-            {
-                DialogueContext.CurrentQuestPoint.OpenQuestRewardUI();
-            }
-        });
+        story.BindExternalFunction("OpenQuestRewardUI", () => OpenQuestRewardUI());
     }
     // 바인딩 해제
-    public void UnBind(Story story)
-    {
-        story.UnbindExternalFunction("StartQuest");
-        story.UnbindExternalFunction("AdvanceQuest");
-        story.UnbindExternalFunction("FinishQuest");
-    }
+    /* public void UnBind(Story story) 대화가 끝나는 순간 story를 null로 바꿔서 연결을 해제해줌
+     {
+         story.UnbindExternalFunction("StartQuest");
+         story.UnbindExternalFunction("AdvanceQuest");
+         story.UnbindExternalFunction("FinishQuest");
+         story.UnbindExternalFunction("OpenQUestRewardUI");
+     }*/
 
     private void StartQuest(string questId)
     {
@@ -40,6 +35,13 @@ public class InkFunctions
     {
         GameEventManager.instance.questEvents.FinishQuest(questId);
     }
-
+    
+    private void OpenQuestRewardUI()
+    {
+        if (DialogueContext.CurrentQuestPoint != null)
+        {
+            DialogueContext.CurrentQuestPoint.OpenQuestRewardUI();
+        }
+    }
 }
 

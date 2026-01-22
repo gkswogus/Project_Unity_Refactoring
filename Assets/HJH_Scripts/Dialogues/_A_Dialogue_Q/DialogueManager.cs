@@ -7,32 +7,25 @@ using JetBrains.Annotations;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("InkStory")]
-    [SerializeField] private TextAsset inkJson;
+ //   [Header("InkStory")]
+  //  [SerializeField] private TextAsset inkJson;
     private Story story;
     private bool dialoguePlaying = false;
     private int currentChoiceIndex = -1;
 
     private InkFunctions inkFunctions;
-    //private InkDialogueVariables inkDialogueVariables;
+
 
     private void Awake()
     {
-        story = new Story(inkJson.text);
-        inkFunctions = new InkFunctions();
-        inkFunctions.Bind(story);
-      //  inkDialogueVariables = new InkDialogueVariables(story);
+          inkFunctions = new InkFunctions();
     }
-    private void OnDestroy()
-    {
-        inkFunctions.UnBind(story);
-    }
+ 
     private void OnEnable()
     {
         GameEventManager.instance.dialogueEvents.onEnterDialogue += EnterDialogue;
         GameEventManager.instance.dialogueEvents.onChoiceIndex += ChoiceIndex;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue += NextDialogue;
-        GameEventManager.instance.dialogueEvents.onUpdateInkDialogueVariable += UpdadteInkDialogueVariable;
         GameEventManager.instance.questEvents.onQuestStateChange += QuestStateChange;
     }
     private void OnDisable()
@@ -40,14 +33,10 @@ public class DialogueManager : MonoBehaviour
         GameEventManager.instance.dialogueEvents.onEnterDialogue -= EnterDialogue;
         GameEventManager.instance.dialogueEvents.onChoiceIndex -= ChoiceIndex;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue -= NextDialogue;
-        GameEventManager.instance.dialogueEvents.onUpdateInkDialogueVariable -= UpdadteInkDialogueVariable;
         GameEventManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
     }
 
-    private void UpdadteInkDialogueVariable(string name, Ink.Runtime.Object value)
-    {
-     //   inkDialogueVariables.UpdataVariableState(name, value);
-    }
+   
 
     private void QuestStateChange(Quest quest)
     {
@@ -66,20 +55,16 @@ public class DialogueManager : MonoBehaviour
         if (!dialoguePlaying) return;
         ContinueOrExitStory();
     }
-    private void EnterDialogue(string knotName,QuestInfo info,QuestState state) // 대화 시작
+    private void EnterDialogue(TextAsset npcInkJson, QuestInfo info,QuestState state) // 대화 시작
     {
         if (dialoguePlaying) return;
 
+        story = new Story(npcInkJson.text);
+        inkFunctions.Bind(story);
+
         dialoguePlaying = true;
         GameEventManager.instance.dialogueEvents.DialogueStarted(); // 대화UI 오브젝트 켜기
-
-        if (!knotName.Equals(""))
-        {
-            story.ChoosePathString(knotName); // 해당 이름의 대사 텍스트 설정
-        }
-        // NPC들은 퀘스트 정보를 이미 가지고 있음. 따라서 굳이 잉크에 변수를 가지고 놀 일이 없음. 
         story.variablesState.SetGlobal(info.id + "QuestState", new StringValue(state.ToString()));
-        // inkDialogueVariables.StartListening(story);
 
         ContinueOrExitStory();
     }
@@ -123,10 +108,10 @@ public class DialogueManager : MonoBehaviour
 
         GameEventManager.instance.dialogueEvents.DialogueFinished();
 
-     // inkDialogueVariables.StopListening(story);
-
-        story.ResetState();
-
+        if (story != null)
+        {
+            story = null;
+        }
         DialogueContext.CurrentQuestPoint = null;
     }
 
