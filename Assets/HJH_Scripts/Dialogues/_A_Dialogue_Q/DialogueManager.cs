@@ -7,14 +7,11 @@ using JetBrains.Annotations;
 
 public class DialogueManager : MonoBehaviour
 {
- //   [Header("InkStory")]
-  //  [SerializeField] private TextAsset inkJson;
     private Story story;
     private bool dialoguePlaying = false;
     private int currentChoiceIndex = -1;
 
     private InkFunctions inkFunctions;
-
 
     private void Awake()
     {
@@ -26,26 +23,15 @@ public class DialogueManager : MonoBehaviour
         GameEventManager.instance.dialogueEvents.onEnterDialogue += EnterDialogue;
         GameEventManager.instance.dialogueEvents.onChoiceIndex += ChoiceIndex;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue += NextDialogue;
-        GameEventManager.instance.questEvents.onQuestStateChange += QuestStateChange;
     }
     private void OnDisable()
     {
         GameEventManager.instance.dialogueEvents.onEnterDialogue -= EnterDialogue;
         GameEventManager.instance.dialogueEvents.onChoiceIndex -= ChoiceIndex;
         GameEventManager.instance.inputEvents.interactionEvents.onNextDialogue -= NextDialogue;
-        GameEventManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
     }
 
-   
-
-    private void QuestStateChange(Quest quest)
-    {
-        GameEventManager.instance.dialogueEvents.UpdateInkDialogueVariable(
-            quest.info.id + "QuestState",
-            new StringValue(quest.state.ToString())
-            );
-    }
-
+ 
     private void ChoiceIndex(int index)
     {
         currentChoiceIndex = index;
@@ -55,10 +41,10 @@ public class DialogueManager : MonoBehaviour
         if (!dialoguePlaying) return;
         ContinueOrExitStory();
     }
-    private void EnterDialogue(TextAsset npcInkJson, QuestInfo info,QuestState state) // 대화 시작
+    private void EnterDialogue(TextAsset npcInkJson, QuestInfo info, QuestState state) // 대화 시작
     {
         if (dialoguePlaying) return;
-
+   
         story = new Story(npcInkJson.text);
         inkFunctions.Bind(story);
 
@@ -112,7 +98,6 @@ public class DialogueManager : MonoBehaviour
         {
             story = null;
         }
-        DialogueContext.CurrentQuestPoint = null;
     }
 
     private bool LineFix(string dialogueLine) // 잉크 문제. 대화 선택지 선택 시, 빈 텍스트 출력 삭제

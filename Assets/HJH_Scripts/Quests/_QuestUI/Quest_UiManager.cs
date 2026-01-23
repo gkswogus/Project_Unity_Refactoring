@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Properties;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class Quest_UiManager : MonoBehaviour
@@ -12,7 +14,6 @@ public class Quest_UiManager : MonoBehaviour
     [SerializeField] private TMP_Text goldRewardText;
     [SerializeField] private TMP_Text expRewardText;
     [SerializeField] private UnityEngine.UI.Button btn;
-    private QuestPoint currentQuestPoint;
  
     [Header("퀘스트 정보 창")]
     [SerializeField] GameObject questUI;
@@ -28,13 +29,14 @@ public class Quest_UiManager : MonoBehaviour
 
     private bool isQustUI;
 
+    private string questId; // 서버(퀘스트매니저) 쪽으로 보낼 퀘스트 정보
+
     [Header("퀘스트 매니저")]
     [SerializeField] QuestManager qm;
 
     private void Awake()
     {
         Instance = this;
-        btn.onClick.AddListener(OnClickConfirm);
     }
     private void Start()
     {
@@ -45,30 +47,26 @@ public class Quest_UiManager : MonoBehaviour
 
         GameEventManager.instance.questEvents.onQuest_inp += Quest_Inprogress;
         GameEventManager.instance.questEvents.onQuest_fin += Quest_Finish;
+
+        GameEventManager.instance.questEvents.onQuestRewardUI += QuestRewardUI;
     }
     //******************************************************************// 이하 보상 UI  
-    public void Open(QuestPoint questpoint)
+    private void QuestRewardUI(Quest quest)
     {
-        currentQuestPoint = questpoint;
-        goldRewardText.text = $"{questpoint.QuestInfoForPoint.goldReward}";
-        expRewardText.text = $"{questpoint.QuestInfoForPoint.expReward}";
+        questId = quest.info.id;
+        goldRewardText.text=quest.info.goldReward.ToString();
+        expRewardText.text=quest.info.expReward.ToString();
         reWardUI.SetActive(true);
         UIEventControll.instance.isOnUI = true; // 마우스 제어
     }
 
-    public void OnClickConfirm()
+    public void OnClickConfirm() //보상 받기 버튼 클릭 시
+                                 //UI 끄기 및 퀘스트 완료 + 보상 획득 요청
     {
-        if (currentQuestPoint == null) return;
-
-        currentQuestPoint.ReWardGet(); // NPC에게 퀘스트 완료 처리 요청
-        currentQuestPoint = null;
+        GameEventManager.instance.questEvents.FinishQuest(questId);
+        SoundManager.instance.Play(UISOUND.QuestC);
         reWardUI.SetActive(false);
         UIEventControll.instance.isOnUI = false;
-    }
-
-    public void ColseRewardUI()
-    {
-        reWardUI.SetActive(false);
     }
 
     //******************************************************************// 이하 정보 UI

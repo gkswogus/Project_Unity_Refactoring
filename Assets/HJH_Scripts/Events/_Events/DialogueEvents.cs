@@ -37,9 +37,4 @@ public class DialogueEvents : MonoBehaviour
         onChoiceIndex?.Invoke(index);
     }
 
-    public event Action<string, Ink.Runtime.Object> onUpdateInkDialogueVariable;
-    public void UpdateInkDialogueVariable(string name,  Ink.Runtime.Object value)
-    {
-        onUpdateInkDialogueVariable?.Invoke(name, value);
-    }
 }

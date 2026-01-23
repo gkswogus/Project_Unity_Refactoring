@@ -50,34 +50,10 @@ public class QuestPoint : MonoBehaviour
     {
         if (!NearView()) return;
 
-       // if (!dialogueKnotName.Equals(""))
        if(inkJson!=null)
         {
-            DialogueContext.CurrentQuestPoint = this;
             GameEventManager.instance.dialogueEvents.EnterDialogue(inkJson, QuestInfoForPoint, currentQuestState);
         }
-        else
-        {
-            if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
-            {
-                GameEventManager.instance.questEvents.StartQuest(questId);
-            }
-            else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
-            {
-                OpenQuestRewardUI();
-            }
-        }
-
-    }
-    public void OpenQuestRewardUI() // 퀘스트 완료 할 때 호출 => Ink 연동하기
-    {
-        Quest_UiManager.Instance.Open(this);
-    }
-
-    public void ReWardGet() // UiManager에서 버튼 클릭 이벤트 함수 연동 => 클릭 시 호출
-    {
-        GameEventManager.instance.questEvents.FinishQuest(questId);
-        SoundManager.instance.Play(UISOUND.QuestC);
     }
 
     private void QuestStateChange(Quest quest) // 퀘스트 상태 아이콘 변경 이벤트

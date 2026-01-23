@@ -29,8 +29,8 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.questEvents.onStartQuest += StartQuest;
         GameEventManager.instance.questEvents.onAdvanceQuest += AdvanceQuest;
         GameEventManager.instance.questEvents.onFinishQuest += FinishQuest;
-
         GameEventManager.instance.playerEvents.onPlayerLevelChange += PlayerLevelChange;
+        GameEventManager.instance.questEvents.onQuestRewardInfo += QuestRewardInfo;
         //  GameEventManager.instance.questEvents.onProgressQuestUI += ProgressQuestUI;
         //  GameEventManager.instance.questEvents.onFinishQuestUI += FinishQuestUI;
         //  GameEventManager.instance.questEvents.onRewardQuestUI += RewardQuestUI;
@@ -43,6 +43,7 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.questEvents.onAdvanceQuest -= AdvanceQuest;
         GameEventManager.instance.questEvents.onFinishQuest -= FinishQuest;
         GameEventManager.instance.playerEvents.onPlayerLevelChange -= PlayerLevelChange;
+        GameEventManager.instance.questEvents.onQuestRewardInfo -= QuestRewardInfo;
         //  GameEventManager.instance.questEvents.onProgressQuestUI -= ProgressQuestUI;
         //  GameEventManager.instance.questEvents.onFinishQuestUI -= FinishQuestUI;
         //   GameEventManager.instance.questEvents.onRewardQuestUI -= RewardQuestUI;
@@ -52,7 +53,7 @@ public class QuestManager : MonoBehaviour
     {
         return questMap[questid].state;
     }
-   
+
     private void Start()
     {
 
@@ -116,8 +117,6 @@ public class QuestManager : MonoBehaviour
         } 
     }
 
-   // public List<Quest> getInprogress_Q = new();
-   // public List<Quest> getFinish_Q = new();
     private void StartQuest(string id) // 시작가능 => 진행중
     {
         Quest quest = GetQuestById(id);
@@ -140,11 +139,12 @@ public class QuestManager : MonoBehaviour
     private void FinishQuest(string id) // 완료가능 => 완료
     {
         Quest quest = GetQuestById(id);
+
+        if (quest.state != QuestState.CAN_FINISH) return; // 보상 획득 전 체크
+
         QuestRewards(quest); // 퀘스트 보상 획득
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
        
-     //   getInprogress_Q.Remove(quest);
-     //   getFinish_Q.Add(quest);
         GameEventManager.instance.questEvents.Quest_fin(quest);
 
         foreach (QuestStep queststep in GetComponentsInChildren<QuestStep>())
@@ -163,6 +163,11 @@ public class QuestManager : MonoBehaviour
     {
         GameEventManager.instance.goldEvents.GoldGained(quest.info.goldReward);    
         GameEventManager.instance.playerEvents.ExperienceGained(quest.info.expReward);
+    }
+    private void QuestRewardInfo(string id) //보상 UI 
+    {
+        Quest quest = GetQuestById(id);
+        GameEventManager.instance.questEvents.QuestRewardUI(quest);
     }
 
     private Dictionary<string, Quest> CreateQuestMap()

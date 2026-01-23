@@ -17,7 +17,7 @@ Q 키를 눌러서 퀘스트 현황을 확인해봐
 수고 많았어!
 여기 소소하지만 보상을 줄게!
 그럼 잘가!
-~OpenQuestRewardUI()
+~OpenQuestRewardUI("KillGostMonster")
 -> END
 
 = finished

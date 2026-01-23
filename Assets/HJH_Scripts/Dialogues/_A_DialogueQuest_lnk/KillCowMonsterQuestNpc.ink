@@ -33,7 +33,7 @@ VAR KillCowMonsterQuestState =""
 와! 정말 대단해요 기사님!
 정말 강력하시군요!
 여기 제 성의를 담은 보상을 받아주세요!
-~OpenQuestRewardUI()
+~OpenQuestRewardUI("KillCowMonster")
 -> END
 
 = finished 

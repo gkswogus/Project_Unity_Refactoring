@@ -40,12 +40,24 @@ public class QuestEvents
     {
         onQuest_inp?.Invoke(quests);    
     }
+
     public event Action<Quest> onQuest_fin;
     public void Quest_fin(Quest quests)
     {
         onQuest_fin?.Invoke(quests);
     }
 
+    public event Action<string> onQuestRewardInfo;
+    public void QuestRewardInfo(string id)
+    {
+        onQuestRewardInfo?.Invoke(id);
+    }
+
+    public event Action<Quest> onQuestRewardUI;
+    public void QuestRewardUI(Quest quest)
+    {
+        onQuestRewardUI?.Invoke(quest);
+    }
     /*  public event Action<TMP_Text, TMP_Text, TMP_Text, TMP_Text> onProgressQuestUI;
       public void ProgressQuestUI(TMP_Text id,TMP_Text name,TMP_Text progress, TMP_Text reward)
       {
