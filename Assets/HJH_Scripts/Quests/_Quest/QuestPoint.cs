@@ -12,7 +12,7 @@ public class QuestPoint : MonoBehaviour
 
     [Header("Quest")] // 퀘스트 넣기
     [SerializeField] private QuestInfo questInfoForPoint;
-    public QuestInfo QuestInfoForPoint => questInfoForPoint; // 읽기 전용 프로퍼티
+
     public QuestState currentQuestState;
     [Header("QuestPoint")] // 시작지점 or 완료지점 설정
     [SerializeField] private bool startPoint = true;
@@ -46,13 +46,16 @@ public class QuestPoint : MonoBehaviour
         GameEventManager.instance.inputEvents.interactionEvents.onSubmitPressed -= SubmitPressed;
     }
 
-    private void SubmitPressed() // 퀘스트 시작 or 완료 이벤트
+    private void SubmitPressed() // 퀘스트 시작을 위한 상호작용
     {
         if (!NearView()) return;
 
-       if(inkJson!=null)
+        if (inkJson != null &&
+       (currentQuestState == QuestState.CAN_START ||
+        currentQuestState == QuestState.IN_PROGRESS ||
+        currentQuestState == QuestState.CAN_FINISH))
         {
-            GameEventManager.instance.dialogueEvents.EnterDialogue(inkJson, QuestInfoForPoint, currentQuestState);
+            GameEventManager.instance.dialogueEvents.EnterDialogue(inkJson, questInfoForPoint, currentQuestState);
         }
     }
 

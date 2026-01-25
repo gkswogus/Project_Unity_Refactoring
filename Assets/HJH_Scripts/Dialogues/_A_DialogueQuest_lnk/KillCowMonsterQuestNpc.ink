@@ -2,17 +2,11 @@ INCLUDE all_dailogue.ink
 
 VAR KillCowMonsterQuestState =""
 { KillCowMonsterQuestState :
-   - "REQUIREMENTS_NOT_MET" : -> requirementsNotMet
    - "CAN_START" : -> canStart
    - "IN_PROGRESS" : -> inProgress
    - "CAN_FINISH" : -> canFinish
-   - "FINISHED" : -> finished
    - else : -> END
 }
-
-= requirementsNotMet
-여기서 어떻게 나가지...
--> END   
 
 = canStart
 기사님!
@@ -36,7 +30,4 @@ VAR KillCowMonsterQuestState =""
 ~OpenQuestRewardUI("KillCowMonster")
 -> END
 
-= finished 
-정말 감사합니다. 
-덕분에 마을 밖이 안전해 졌어요.
--> END
+

@@ -4,7 +4,6 @@ VAR KillGostMonsterQuestState=""
 { KillGostMonsterQuestState :
     - "IN_PROGRESS" : -> inProgress
     - "CAN_FINISH" : -> canFinish
-    - "FINISHED" : -> finished   
     - else : -> END
 }
 
@@ -20,8 +19,5 @@ Q 키를 눌러서 퀘스트 현황을 확인해봐
 ~OpenQuestRewardUI("KillGostMonster")
 -> END
 
-= finished
-다음에도 도와줄거지?
--> END
 
 
