@@ -1,5 +1,6 @@
 using Ink.Parsed;
 using Ink.Runtime;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,7 +10,9 @@ public class DialogueUi : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private DialogueChoiceButton[] choiceButtons;
-    
+
+    public Coroutine typingCoroutine;
+    private string fullDialogueText;
 
     private void Awake()
     {
@@ -44,9 +47,10 @@ public class DialogueUi : MonoBehaviour
 
     private void DialogueDisplay(string display, List<Ink.Runtime.Choice> dialogueChoices)
     {
-        dialogueText.text = display;   
+        fullDialogueText = display;
+        typingCoroutine = StartCoroutine(TypeTextCoroutine(display));
 
-        foreach(DialogueChoiceButton choiceButton in choiceButtons)
+        foreach (DialogueChoiceButton choiceButton in choiceButtons)
         {
             choiceButton.gameObject.SetActive(false); 
         }
@@ -72,7 +76,25 @@ public class DialogueUi : MonoBehaviour
         }
 
     }
-
+    private IEnumerator TypeTextCoroutine(string text)
+    {
+        dialogueText.text = "";
+        foreach (char letter in text)
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(0.03f); // 한 글자 출력 간격 조절 가능
+        }
+        typingCoroutine = null;
+    }
+    public void SkipTyping() // 코루틴이 이미 돌고 있으면 멈추고 전체 텍스트 즉시 출력
+    {     
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            dialogueText.text = fullDialogueText;
+            typingCoroutine = null;
+        }
+    }
     private void ResetDialogueText()
     {
         dialogueText.text = "";

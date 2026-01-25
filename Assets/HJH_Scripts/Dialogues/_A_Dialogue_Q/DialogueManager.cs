@@ -13,6 +13,8 @@ public class DialogueManager : MonoBehaviour
 
     private InkFunctions inkFunctions;
 
+    [Header("대화 상자")]
+    [SerializeField] private DialogueUi dialogueUi;
     private void Awake()
     {
           inkFunctions = new InkFunctions();
@@ -39,9 +41,15 @@ public class DialogueManager : MonoBehaviour
     private void NextDialogue() // G키 입력을 통해 다음 대사로 넘기기
     {
         if (!dialoguePlaying) return;
+        if(dialogueUi.typingCoroutine != null)
+        {
+            dialogueUi.SkipTyping();
+            return;
+        }
+
         ContinueOrExitStory();
     }
-    private void EnterDialogue(TextAsset npcInkJson, QuestInfo info, QuestState state) // 대화 시작
+    private void EnterDialogue(TextAsset npcInkJson, QuestInfo info, QuestState state) // Y키 입력을 통해 대화 시작
     {
         if (dialoguePlaying) return;
    
