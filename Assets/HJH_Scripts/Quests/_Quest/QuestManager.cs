@@ -120,7 +120,9 @@ public class QuestManager : MonoBehaviour
     private void StartQuest(string id) // 시작가능 => 진행중
     {
         Quest quest = GetQuestById(id);
-     // 퀘스트 완료 조건인 QuestStep 오브젝트를 하위 객체로 생성
+        if (quest.state != QuestState.CAN_START) return;
+
+        // 퀘스트 완료 조건인 QuestStep 오브젝트를 하위 객체로 생성
         quest.InstantiateCurrentQuestStep(this.transform);
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
 

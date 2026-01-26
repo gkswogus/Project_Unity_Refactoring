@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d16870ffb056c14195c28381f8b4c80, type: 3}
+  m_Name: AskTo_A
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: AskTo_A
+  DisplayName: "\uAE30\uC0AC\uC640 \uB300\uD654\uD558\uACE0 \uC7A5\uBE44 \uC9C0\uAE09
+    \uBC1B\uAE30"
+  levelRequirement: 1
+  questPrerequistes: []
+  questStepPrefab: {fileID: 9200457521765378745, guid: b8d6a81ae6ecbbe4ea11f3c791fea102, type: 3}
+  goldReward: 0
+  expReward: 0
