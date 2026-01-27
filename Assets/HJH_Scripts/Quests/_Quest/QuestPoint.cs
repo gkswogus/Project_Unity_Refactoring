@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.Properties;
 
 public class QuestPoint : MonoBehaviour
 {
@@ -19,18 +20,12 @@ public class QuestPoint : MonoBehaviour
     [SerializeField] private bool finishPoint = true;
 
     private string questId;
-
-
     private QuestIcon questIcon;
-    Transform player;
-    float distance;
-    float angleView;
-    Vector3 direction;
+
+    private bool playerIsNear;
 
     private void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Transform>();
-
         questIcon = GetComponentInChildren<QuestIcon>();
         questId = questInfoForPoint.id;
     }
@@ -48,12 +43,9 @@ public class QuestPoint : MonoBehaviour
 
     private void SubmitPressed() // 퀘스트 시작을 위한 상호작용
     {
-        if (!NearView()) return;
+        if (!playerIsNear) return;
 
-        if (inkJson != null &&
-       (currentQuestState == QuestState.CAN_START ||
-        currentQuestState == QuestState.IN_PROGRESS ||
-        currentQuestState == QuestState.CAN_FINISH))
+        if (inkJson != null)
         {
             GameEventManager.instance.dialogueEvents.EnterDialogue(inkJson, questInfoForPoint, currentQuestState);
         }
@@ -68,14 +60,13 @@ public class QuestPoint : MonoBehaviour
         }
     }
 
-    bool NearView() // 시야 체크
+    private void OnTriggerEnter(Collider other)
     {
-        distance = Vector3.Distance(this.transform.position, player.transform.position); // 거리
-        direction = this.transform.position - player.transform.position; //방향 벡터
-        angleView = Vector3.Angle(player.transform.forward, direction);  // 바라보는 방향 각도
-        if (angleView < 45f && distance < 5f)
-            return true;
-        else return false;
+        if(other.CompareTag("Player")) playerIsNear = true;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player")) playerIsNear = false;
     }
 
 }
