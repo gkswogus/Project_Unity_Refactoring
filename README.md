@@ -1,12 +1,3 @@
-cd "~/~"
-git status
-git add ~/~
-gid commit -m "~"
-gid push origin main => 올리기
-git pull origin main => 가져오기
-
-git log --oneline => 기록 확인
-git reset HEAD~n(n만큼 최근 지우기 n>0)
-git push origin main --force => 깃 저장소 커밋 삭제
-
-git reset => add에서 빼기
+대충 내가 2년 전 만들었던 프로젝트 코드 너무 안좋아서 리펙토링 하던 중
+git허브를 사용해보고자 후반 부터 깃허브로 작업하기 시작함
+잉크 대화 시스템을 주로 만들었음.
