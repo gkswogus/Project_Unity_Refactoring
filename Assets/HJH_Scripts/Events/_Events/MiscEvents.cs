@@ -22,4 +22,10 @@ public class MiscEvents //몬스터 처치 퀘스트 이벤트
         }
     }
 
+    // 공통 몬스터 처치 퀘스트 이벤트
+    public event Action<string> onKilledMonster;
+    public void KilledMonster(string id)
+    {
+        onKilledMonster?.Invoke(id);
+    }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2087278097821544546}
-  - component: {fileID: -513262803715378213}
+  - component: {fileID: 895633391537868169}
   m_Layer: 0
   m_Name: FirstQuestStep
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-513262803715378213
+--- !u!114 &895633391537868169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,6 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 21648883034410672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d26d264151f7c8f4eb915fe853c66a2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ef8356e3b716b24692d9becc31ac349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetMonster: {fileID: 11400000, guid: db817c9b0fa1e14429e0b605cdd7142b, type: 2}
+  requiredKillCount: 3
