@@ -166,7 +166,7 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.goldEvents.GoldGained(quest.info.goldReward);    
         GameEventManager.instance.playerEvents.ExperienceGained(quest.info.expReward);
     }
-    private void QuestRewardInfo(string id) //보상 UI 
+    private void QuestRewardInfo(string id) //보상 UI Ink 시스템과 연동. 대화 종료 시 호출
     {
         Quest quest = GetQuestById(id);
         GameEventManager.instance.questEvents.QuestRewardUI(quest);
