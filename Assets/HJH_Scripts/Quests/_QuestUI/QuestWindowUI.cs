@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +20,7 @@ public class QuestWindowUI : MonoBehaviour
 
     private bool isQustUI;
 
+    private Dictionary<string, GameObject> inProgressQuest = new Dictionary<string, GameObject>();
     private void Start()
     {
         questUI.SetActive(false);
@@ -28,17 +28,30 @@ public class QuestWindowUI : MonoBehaviour
     private void OnEnable()
     {
         GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
-        GameEventManager.instance.questEvents.onQuest_inp += Quest_Inprogress;
-        GameEventManager.instance.questEvents.onQuest_fin += Quest_Finish;
+        GameEventManager.instance.questEvents.onQuestStateChange += QuestStateChanged;
     }
 
     private void OnDisable()
     {
         GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off -= QuestWindowOn_Off;
-        GameEventManager.instance.questEvents.onQuest_inp -= Quest_Inprogress;
-        GameEventManager.instance.questEvents.onQuest_fin -= Quest_Finish;
+        GameEventManager.instance.questEvents.onQuestStateChange += QuestStateChanged;
     }
+    private void QuestStateChanged(Quest quest)
+    {
+        switch (quest.state)
+        {
+            case QuestState.IN_PROGRESS:
+                AddInProgressQuest(quest);
+                break;
 
+            case QuestState.FINISHED:
+                MoveToFinishedQuest(quest);
+                break;
+
+           default:
+                break;
+        }
+    }
     private void QuestWindowOn_Off()
     {
         isQustUI = !isQustUI;
@@ -61,25 +74,20 @@ public class QuestWindowUI : MonoBehaviour
         ClearQuestDetail();
     }
 
-    private Dictionary<string, GameObject> inProgressQuest = new Dictionary<string, GameObject>();
-    void Quest_Inprogress(Quest quest)
+    void AddInProgressQuest(Quest quest)
     {
-
         if (inProgressQuest.ContainsKey(quest.info.id))
             return;
 
         GameObject go = Instantiate(questidPrefab, inp_questListContent);
-        TMP_Text text = go.GetComponentInChildren<TMP_Text>();
-        text.text = quest.info.id;
-        // 진행중인 퀘스트의 이름 버튼오브젝트에 함수 연결
-        go.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => ShowQuestDetail(quest));
+        go.GetComponentInChildren<TMP_Text>().text = quest.info.id;
+        go.GetComponent<Button>().onClick.AddListener(() => ShowQuestDetail(quest));
 
         inProgressQuest.Add(quest.info.id, go);
     }
 
-    void Quest_Finish(Quest quest)
+    void MoveToFinishedQuest(Quest quest)
     {
-        //진행중인 퀘스트 버튼오브젝트 및 딕셔너리에서 삭제
         if (inProgressQuest.TryGetValue(quest.info.id, out GameObject inGo))
         {
             Destroy(inGo);
@@ -87,10 +95,8 @@ public class QuestWindowUI : MonoBehaviour
         }
 
         GameObject go = Instantiate(questidPrefab, fin_questListContent);
-        TMP_Text text = go.GetComponentInChildren<TMP_Text>();
-        text.text = quest.info.id;
-
-        go.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => ShowFinishQuestDetail(quest));
+        go.GetComponentInChildren<TMP_Text>().text = quest.info.id;
+        go.GetComponent<Button>().onClick.AddListener(() => ShowFinishQuestDetail(quest));
     }
 
     private void ClearQuestDetail()

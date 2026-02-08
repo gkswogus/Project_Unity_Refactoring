@@ -35,18 +35,6 @@ public class QuestEvents
     }
 
     // Äù½ºÆ® UI °ü·Ã //
-    public event Action<Quest> onQuest_inp;
-    public void Quest_inf(Quest quests)
-    {
-        onQuest_inp?.Invoke(quests);    
-    }
-
-    public event Action<Quest> onQuest_fin;
-    public void Quest_fin(Quest quests)
-    {
-        onQuest_fin?.Invoke(quests);
-    }
-
     public event Action<string> onQuestRewardInfo;
     public void QuestRewardInfo(string id)
     {
@@ -58,28 +46,5 @@ public class QuestEvents
     {
         onQuestRewardUI?.Invoke(quest);
     }
-    /*  public event Action<TMP_Text, TMP_Text, TMP_Text, TMP_Text> onProgressQuestUI;
-      public void ProgressQuestUI(TMP_Text id,TMP_Text name,TMP_Text progress, TMP_Text reward)
-      {
-          onProgressQuestUI?.Invoke(id,name,progress,reward);
-      }
-
-      public event Action<TMP_Text> onFinishQuestUI;
-      public void FinishQuestUI(TMP_Text qeuestid)
-      {
-          onFinishQuestUI?.Invoke(qeuestid);
-      }
-
-      public event Action<string> onRewardQuestUI;
-      public void RewardQuestUI(string id)
-      {
-          onRewardQuestUI?.Invoke(id);
-      }*/
-
-    /*  public event Action<String, TMP_Text, TMP_Text> onRewardQuestUI;
-      public void RewardQuestUI(String id, TMP_Text goldreward, TMP_Text Expreward)
-      {
-          onRewardQuestUI?.Invoke(id, goldreward, Expreward);
-      }
-  */
+ 
 }

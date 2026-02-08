@@ -16,9 +16,6 @@ public class QuestManager : MonoBehaviour
 
     private int currentPlayerLevel;
 
-
-    // [SerializeField] STD playerSTD;
-
     private void Awake()
     {
         questMap = CreateQuestMap();
@@ -31,10 +28,6 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.questEvents.onFinishQuest += FinishQuest;
         GameEventManager.instance.playerEvents.onPlayerLevelChange += PlayerLevelChange;
         GameEventManager.instance.questEvents.onQuestRewardInfo += QuestRewardInfo;
-        //  GameEventManager.instance.questEvents.onProgressQuestUI += ProgressQuestUI;
-        //  GameEventManager.instance.questEvents.onFinishQuestUI += FinishQuestUI;
-        //  GameEventManager.instance.questEvents.onRewardQuestUI += RewardQuestUI;
-        // GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
     }
 
     private void OnDisable()
@@ -44,10 +37,6 @@ public class QuestManager : MonoBehaviour
         GameEventManager.instance.questEvents.onFinishQuest -= FinishQuest;
         GameEventManager.instance.playerEvents.onPlayerLevelChange -= PlayerLevelChange;
         GameEventManager.instance.questEvents.onQuestRewardInfo -= QuestRewardInfo;
-        //  GameEventManager.instance.questEvents.onProgressQuestUI -= ProgressQuestUI;
-        //  GameEventManager.instance.questEvents.onFinishQuestUI -= FinishQuestUI;
-        //   GameEventManager.instance.questEvents.onRewardQuestUI -= RewardQuestUI;
-        // GameEventManager.instance.inputEvents.uiEvent.OnQuestWindowOn_Off += QuestWindowOn_Off;
     }
    public QuestState GetQuestState(string questid)
     {
@@ -55,8 +44,7 @@ public class QuestManager : MonoBehaviour
     }
 
     private void Start()
-    {
-
+    { 
         QuestData data = LoadQuestDataFromFile();
         LoadQuestState(data);
         foreach (Quest quest in questMap.Values)
@@ -64,9 +52,7 @@ public class QuestManager : MonoBehaviour
             if (quest.state == QuestState.IN_PROGRESS || quest.state == QuestState.CAN_FINISH)
             {
                 quest.InstantiateCurrentQuestStep(this.transform);
-                GameEventManager.instance.questEvents.Quest_inf(quest);
             }
-            if(quest.state == QuestState.FINISHED) GameEventManager.instance.questEvents.Quest_fin(quest);
             GameEventManager.instance.questEvents.QuestStateChange(quest);
         }
         LoadQuestStep(data);
@@ -78,8 +64,6 @@ public class QuestManager : MonoBehaviour
         quest.state = state;
         // 퀘스트 상태 아이콘을 바꿔주는 이벤트
         GameEventManager.instance.questEvents.QuestStateChange(quest);
-
-       // AddQuestState(quest);
     }
 
     private void PlayerLevelChange(int level) 
@@ -125,10 +109,6 @@ public class QuestManager : MonoBehaviour
         // 퀘스트 완료 조건인 QuestStep 오브젝트를 하위 객체로 생성
         quest.InstantiateCurrentQuestStep(this.transform);
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
-
-     //   getInprogress_Q.Add(quest);
-        GameEventManager.instance.questEvents.Quest_inf(quest);
-
     }
 
     private void AdvanceQuest(string id) // 진행중 => 완료가능
@@ -147,8 +127,6 @@ public class QuestManager : MonoBehaviour
         QuestRewards(quest); // 퀘스트 보상 획득
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
        
-        GameEventManager.instance.questEvents.Quest_fin(quest);
-
         foreach (QuestStep queststep in GetComponentsInChildren<QuestStep>())
         {
              // questId가 일치하는 경우
@@ -190,72 +168,6 @@ public class QuestManager : MonoBehaviour
         return quest;
     }
 
- 
- /*   void AddQuestState(Quest quest)
-    {
-        if(quest.state == QuestState.IN_PROGRESS || quest.state == QuestState.CAN_FINISH) getInprogress_Q.Add(quest);
-        if(quest.state == QuestState.FINISHED ) getFinish_Q.Add(quest);
-    }*/
-
-/*    public List<Quest> GetInprogress_Quest()  q누를때마다 리스트에 값 넣었다 뺐다 에바야.
-    {
-        if (questMap == null) return new List<Quest>();
-
-        return questMap.Values
-            .Where(q => q.state == QuestState.IN_PROGRESS || q.state == QuestState.CAN_FINISH)
-            .ToList();
-    }
-   
-    public List<Quest> GetFinishQuest()
-    {
-        if (questMap == null) return new List<Quest>();
-
-        return questMap.Values
-            .Where(q => q.state == QuestState.FINISHED)
-            .ToList();
-    }*/
-
-    
-
-    /*******퀘스트 보상창 추가.********/ // 구조분리 완료.
-   /* public void RewardQuestUI(string questId)  // 혹시 이부분, 매개변수 string 말고 퀘스트 자체로 받게 => QuestPoint에 있는 퀘스트 인포 넘겨받기.
-    {                                          // 이 이벤트 필요 없음. 그냥 QuestPoint에서 UIManager로 슝
-        List<Quest> quests = GetInprogress_FinishQuest();
-        Quest target = quests.FirstOrDefault(q => q.info.id == questId); // ← 해당 NPC의 퀘스트만
-         //조건을 만족하는 첫 번째 요소를 찾을 때 유용하게 사용 FirstOrDefault
-        if (target != null)
-        {
-           Quest_UiManager.Instance.ShowRewardText(target);
-        }
-    }*/
-
-    /*******퀘스트 정보창(Q) 부분 추가.********/ 
-
-/*    private void ProgressQuestUI(TMP_Text id, TMP_Text displayname, TMP_Text progress, TMP_Text reward)
-    {
-        ProgressQuestUIText progressquestui = new ProgressQuestUIText(id, displayname, progress, reward);
-        Quest quest = GetProgress_FinishQuest();
-        if (quest != null) progressquestui.ShowText(quest);
-        else progressquestui.ShowTextEmpty();
-    }
-
-    private void FinishQuestUI(TMP_Text id)
-    {
-        FinishQuestUiText finishquestui = new FinishQuestUiText(id);
-        List<Quest> quests = GetFinishQuest();
-        // if (quests != null)
-        finishquestui.ShowText(quests);
-    }*/
-  /*  private void QuestWindowOn_Off() // Q키로 퀘스트 정보 창 띄우기 // 이거 하나로 위에 두개 씹어먹음
-    {
-        List<Quest> inprogress_Qust = GetInprogress_Quest();
-        List<Quest> finish_Quest = GetFinishQuest();
-
-        Quest_UiManager.Instance.OpenQuestWindow(inprogress_Qust, finish_Quest);
-    }*/
-
-    /*******퀘스트 저장 시스템********/   //해야할 것! 하위객체에 퀘스트에있는 클리어조건 변수 가져오기! 인터페이스추가.
-    //JSON 저장 (파일 기반): 복잡한 구조, 여러 개의 데이터, 리스트, 오브젝트 저장 시 적합
     public QuestData GetQuestData()  // 저장 시 담을 데이터 그릇.
     {
         QuestData data = new QuestData();
